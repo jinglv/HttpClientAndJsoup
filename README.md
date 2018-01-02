@@ -55,4 +55,42 @@ Element类的重要方法可以参见 - http://jsoup.org/apidocs/org/jsoup/nodes
 HTML元素是由标签名称，属性和子节点组成。 使用Element类，您可以提取数据，遍历节点和操作HTML。
 Element类的重要方法可参见 - http://jsoup.org/apidocs/org/jsoup/nodes/Element.html 。
 
-
+**获取文档**
+- doc=Jsoup.connect("http://xxx.com/").get();
+ 
+**获取单一元素**
+- Element content = doc.getElementById("content");//与JS类似的根据ID选择的选择器<div id="content"></div>
+ 
+**一下方法的返回值都是Elements集合**
+- content.getElementsByTag("a");//获取所有的a标签<a href="#"></a>
+- doc.getElementsByClass("divClass");//类选择器<div></div>
+- doc.getAllElements();//获取Document的所有元素
+- doc.getElementsByAttribute("href");//根据属性获取元素<a href="#"></a>
+- doc.getElementsByAttributeStarting("data-");//根据属性前缀获取元素 <li data-name="Peter Liu" data-city="ShangHai" data-lang="CSharp" data-food="apple">
+- doc.getElementsByAttributeValue("href","http://xdemo.org");//根据key-value选择如<a href="http://xdemo.org"></a>
+- doc.getElementsByAttributeValueNot("href","http://xdemo.org");//和上面的正好相反
+- doc.getElementsByAttributeValueContaining("href", "xdemo");//根据key-value,其中value可能是key对应属性的一个子字符串，选择如<a href="http://xdemo.org"></a>
+- doc.getElementsByAttributeValueEnding("href", "org");//根据key-value,其中key对应值的结尾是value，选择如<a href="http://xdemo.org"></a>
+- doc.getElementsByAttributeValueStarting("href","http://xdemo");//和上面的正好相反
+- doc.getElementsByAttributeValueMatching("href",Pattern.compile("[\u4e00-\u9fa5]"));//正则匹配，value需要满足正则表达式，<a href="http://xdemo.org"></a>,如href的值含有汉字
+- doc.getElementsByAttributeValueMatching("href", "[\u4e00-\u9fa5]");//同上
+- doc.getElementsByIndexEquals(0);//根据元素所在的z-index获取元素
+- doc.getElementsByIndexGreaterThan(0);//获取z-index大于x的元素
+- doc.getElementsByIndexLessThan(10);//和上面的正好相反
+ 
+```java
+//遍历标签
+for (Element link : content.getElementsByTag("a")) {
+ String linkHref = link.attr("href");
+ String linkText = link.text();
+}
+```
+**一些其他常用的方法**
+- doc.title();//获取网页标题
+- doc.text();//获取页面的所有文本
+- content.addClass("newClass");//为元素添加一个css class
+- content.attr("id");//根据属性获取值
+- content.children();//获取所有子元素
+- content.text();//获取元素内的所有文本
+- content.siblingElements();//获取同级元素
+ 

@@ -44,6 +44,7 @@ Jsoup类的一些重要方法如下：
 </tr>
 </tbody>
 </table>
+
 **2. org.jsoup.nodes.Document类**
 
 该类表示通过Jsoup库加载HTML文档。可以使用此类执行适用于整个HTML文档的操作。

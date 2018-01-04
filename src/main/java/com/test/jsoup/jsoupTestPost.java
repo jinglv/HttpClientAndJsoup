@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by lvjing02 on 1/2/2018.
@@ -14,9 +15,10 @@ import java.io.IOException;
 public class jsoupTestPost {
     public static void main(String[] args){
         System.out.println("------------------------------POST请求----------------------------------------");
+        Connection conn = null;
         try {
             String url = "https://passport.jd.com/new/login.aspx";
-            Connection conn = Jsoup.connect(url);
+            conn = Jsoup.connect(url);
             conn.data("loginname","test1");
             conn.data("loginpwd","test1");
             Document doc = conn.post();
@@ -28,7 +30,7 @@ public class jsoupTestPost {
         System.out.println("------------------------------POST请求,带请求头----------------------------------------");
         try {
             String url = "https://passport.jd.com/new/login.aspx";
-            Connection conn = Jsoup.connect(url);
+            conn = Jsoup.connect(url);
             conn.data("loginname","test1");
             conn.data("loginpwd","test1");
 
@@ -40,6 +42,29 @@ public class jsoupTestPost {
 
             Document doc = conn.post();
             System.out.println(doc);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("------------------------------POST请求 获取响应码, 响应信息----------------------------------------");
+        try {
+            String url = "https://passport.jd.com/new/login.aspx";
+            conn = Jsoup.connect(url);
+            conn.data("loginname","test1");
+            conn.data("loginpwd","test1");
+
+            Connection.Response resp = conn.method(Connection.Method.GET).execute();
+            //获取响应码
+            int statusCode = resp.statusCode();
+            System.out.println("响应码：" + statusCode);
+            //获取主体,打印出响应的页面
+            String body = resp.body();
+            System.out.println("主体：：" + body);
+            //获取所有cookies
+            Map<String, String> cookies = resp.cookies();
+            for(Map.Entry<String, String> cookie : cookies.entrySet()){
+                System.out.println(cookie.getKey() + " : " + cookie.getValue());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

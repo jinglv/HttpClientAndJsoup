@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by lvjing02 on 1/2/2018.
@@ -17,7 +18,7 @@ public class jsoupTestGet {
         //Get请求
         try {
             Document doc = Jsoup.connect(url).get(); //返回html数据
-            System.out.println(doc);
+           // System.out.println(doc);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -27,7 +28,7 @@ public class jsoupTestGet {
         String url_  = url + "?" + params;
         try {
             Document doc = Jsoup.connect(url_).get(); //返回html数据
-            System.out.println(doc);
+            //System.out.println(doc);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,7 +38,7 @@ public class jsoupTestGet {
             Connection conn = Jsoup.connect(url);
             conn.data("page", "2");
             Document doc = conn.get();
-            System.out.println(doc);
+            //System.out.println(doc);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,7 +55,25 @@ public class jsoupTestGet {
             //解析请求结果
             Document doc = conn.get();
             //获取标题
-            System.out.println(doc.title());
+            //System.out.println(doc.title());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("------------------------------Get请求 获取响应码, 响应信息----------------------------------------");
+        try {
+            Connection.Response resp = conn.method(Connection.Method.GET).execute();
+            //获取响应码
+            int statusCode = resp.statusCode();
+            System.out.println("响应码：" + statusCode);
+            //获取主体,打印出响应的页面
+            String body = resp.body();
+            System.out.println("主体：：" + body);
+            //获取所有cookies
+            Map<String, String> cookies = resp.cookies();
+            for(Map.Entry<String, String> cookie : cookies.entrySet()){
+                System.out.println(cookie.getKey() + " : " + cookie.getValue());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -4,6 +4,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public class JsoupUtils {
 
-    private final static int timeout = 45000;
+    private final static int timeout = 3000;
 
     /**
      * Jsoup发送get请求，可进行对文本解析
@@ -91,7 +92,7 @@ public class JsoupUtils {
 
         Document document = null;
         try {
-            document = connection.post();
+            document = connection.timeout(timeout).post();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -182,6 +183,27 @@ public class JsoupUtils {
     }
 
     /**
+     * 解析html文档
+     * @param file
+     * @return
+     */
+    public static Document htmlDoc(File file, String charsetName){
+        Document document = null;
+        String charSet;
+        try {
+            if(isEmpty(charsetName) ){
+                charSet = "utf-8";
+            }else{
+                charSet = charsetName;
+            }
+            document = Jsoup.parse(file, charSet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return document;
+    }
+
+    /**
      * html解析
      * @param html
      * @return
@@ -189,5 +211,14 @@ public class JsoupUtils {
     public static Document htmlParser(String html){
         Document doc = Jsoup.parse(html);
         return doc;
+    }
+
+    //判断输入是否为空
+    private static boolean isEmpty(String n){
+        boolean f = true;
+        if(null != n && !"".equals(n)){
+            f = false;
+        }
+        return f;
     }
 }
